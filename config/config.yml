@@ -1,0 +1,48 @@
+# Конфигурация для обучения модели генерации MIDI музыки
+
+# Пути к данным
+data:
+  midi_dir: "data/midi"
+  tokenizer_path: "models/tokenizer.json"
+  max_files: null  # null = использовать все файлы, иначе число
+
+# Параметры токенизатора
+tokenizer:
+  num_velocities: 32
+  use_chords: true
+  use_programs: false
+  use_tempos: false
+  use_time_signatures: true
+  vocab_size: 30000
+
+# Параметры подготовки данных
+preprocessing:
+  context_len: 512
+  stride: 128
+  val_ratio: 0.12
+  batch_size: 32
+  num_workers: 0
+
+# Параметры модели
+model:
+  type: "lstm"  # "lstm" или "transformer"
+  embed_size: 256
+  hidden_size: 512
+  num_layers: 3
+  dropout: 0.3
+
+# Параметры обучения
+training:
+  epochs: 50
+  learning_rate: 0.001
+  checkpoint_path: "models/music_lstm.pth"
+  save_best_only: true
+
+# Параметры генерации
+generation:
+  gen_length: 500
+  temperature: 0.8
+  top_p: 0.95
+  context_len: 512
+  output_dir: "output"
+

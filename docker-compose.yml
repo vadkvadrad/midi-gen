@@ -1,0 +1,31 @@
+services:
+  midi-gen:
+    build: .
+    container_name: midi-generator
+    volumes:
+      # Монтируем данные, модели и вывод для сохранения между запусками
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./output:/app/output
+      # Монтируем код для возможности редактирования
+      - ./src:/app/src
+      - ./config:/app/config
+      - ./train.py:/app/train.py
+      - ./generate.py:/app/generate.py
+      - ./download_data.py:/app/download_data.py
+      # Монтируем Kaggle credentials (если есть)
+      - ~/.kaggle:/root/.kaggle:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
+    # Для GPU поддержки (раскомментируйте если нужно)
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+    stdin_open: true
+    tty: true
+
